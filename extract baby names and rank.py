@@ -17,7 +17,7 @@ def sorter(s):
     return s[-1]
 
 
-filename= 'C:\\Users\\Muhammad Idrees\\Desktop\\2.html'
+filename= 'C:\\Users\\My PC\\Desktop\\2.html'
 f = open(filename, 'r')
 names = f.read()
 f.close()

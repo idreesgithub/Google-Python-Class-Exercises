@@ -1,43 +1,40 @@
 import re
 
-def male_name_rank(year, male, data):
-    var = re.findall(male, data, re.IGNORECASE)
-    var2 = re.findall(year,data,re.IGNORECASE)
+def name_rank(year, male,female, data):
     
-    if var:
-        print(var2[0]) #printing year here. this might not be the best practice, but at the moment that is enough wrt the exercise requirements
-        return var
+    var_year = re.findall(year,data, re.IGNORECASE)         # Findall returns all the occurance on the other side, search returns... 
+    var_male = re.findall(male, data, re.IGNORECASE)        # ... only the first occurence.
+    var_female = re.findall(female, data, re.IGNORECASE)
+
+    if(var_male and var_female):
+        print(var_year[0])                                  # Printing year
+        return var_male, var_female                         # returning tuple of lists
     else:
         print('Name does not exist in this file')
 
 
-def female_name_rank(female, data):
-    var = re.findall(female,data,re.IGNORECASE)
-    
-    if var:
-        return var
-    else:
-        print('Name does not exist in this file')
+def sorter(s):
+    return s[-1]
 
 
-def tuple_sort(string):     # This function is to sort tuples from it's second value
-    return string[-1]
-
-
-filename= 'C:\\Users\\Muhammad Idrees\\Desktop\\4.html'
-f = open(filename, 'r')     # 'r' is for reading only. 'w' for writing.
+filename= 'C:\\Users\\Muhammad Idrees\\Desktop\\2.html'
+f = open(filename, 'r')
 names = f.read()
 f.close()
 
-male_raw_data = male_name_rank(r'<b>popularity in\s+(\d\d\d\d)','<td>(\d+)</td>\s+<td>(\w\w\w+)</td>',names)
-female_raw_data= female_name_rank(r'<td>(\d+)</td>\s+<td>\w\w\w+</td>\s+<td>(\w\w\w+)</td>',names)
 
-raw_data=male_raw_data+female_raw_data
-sorted_data = sorted(raw_data, key=tuple_sort)          # "key" helps us determine which value we want to take for sorting purposes. 
+year = r'<b>popularity in\s+(\d\d\d\d)'                     # () is used to extract only the data we care about given the other...
+m_name = '<td>(\d+)</td>\s+<td>(\w\w\w+)</td>'              # ... matching characters, rather than fetching all the junk.
+f_name = '<td>(\d+)</td>\s+<td>\w\w\w+</td>\s+<td>(\w\w\w+)</td>'
+raw_data = name_rank(year, m_name, f_name, names)
 
-counter = 1
-for i in sorted_data:
-    print(counter,i[1],i[0])
-    counter +=1
 
-    
+male = raw_data[0]                                          # Extracting the returned tuple values
+female = raw_data[1]
+
+male_and_female = []
+male_n_female = sorted(male+female)
+sorted_m_and_f = sorted(male_n_female, key =sorter)
+
+for i in sorted_m_and_f:
+    print(i[0],i[1])    
